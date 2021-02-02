@@ -1,0 +1,58 @@
+<nz-row>
+  <nz-row>
+    <nz-col nzSpan="24">
+            <button (click)="modal(null)" nz-button nzType="primary">
+              <i nz-icon nzType="plus-circle" nzTheme="outline"></i>
+              Добавить
+            </button>
+    </nz-col>
+  </nz-row>
+  <nz-row class="padding-top">
+    <nz-col nzSpan="24">
+      <nz-table nzNoResult="Нет данных по сотрудникам"  #middleTable nzSize="small"
+                [nzLoading]="loading"
+                [nzScroll]="{ x: '100%'}"
+                [nzShowPagination]="false"
+                [nzData]="employee">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>ФИО</th>
+          <th>Количество</th>
+          <th>Сумма</th>
+          <th>События</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of middleTable.data">
+          <td>{{data.employeeId}}</td>
+          <td>{{data.surname + ' ' + data.name + ' ' + data.patronymic}}</td>
+          <td>{{data.quantity}}</td>
+          <td>{{data.commonCost}}</td>
+          <td>
+            <nz-row style="width: 120px">
+              <nz-col nzOffset="1">
+                <button (click)="modal(data)" nz-button nzType="primary">
+                  <i nz-icon nzType="edit" nzTheme="outline"></i>
+                </button>
+              </nz-col>
+              <nz-col nzOffset="1">
+                <button (click)="deactivate(data)" nz-button nzType="danger">
+                  <i nz-icon nzType="lock" nzTheme="outline"></i>
+                </button>
+              </nz-col>
+            </nz-row>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+      <nz-pagination class="margin-top"
+                     (nzPageIndexChange)="getEmployeePaginator($event)"
+                     [nzPageIndex]="paginator?.pageIndex"
+                     [nzPageSize]="paginator?.pageSize"
+                     [nzTotal]="paginator?.total"
+      ></nz-pagination>
+    </nz-col>
+  </nz-row>
+</nz-row>
+

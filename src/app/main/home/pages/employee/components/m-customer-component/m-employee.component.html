@@ -1,0 +1,124 @@
+<div>
+  <form nz-form [formGroup]="validateForm">
+
+    <nz-form-item class="none-width">
+      <nz-form-label [nzSm]="4" nzFor="email" nzRequired>Почта</nz-form-label>
+      <nz-form-control
+        [nzSm]="20"
+        [nzValidateStatus]="validateForm.controls['email']"
+        nzErrorTip="Введите почтовый адрес"
+      >
+        <input style="width: 100%" nz-input formControlName="email" id="email" placeholder="Email"/>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item class="none-width">
+
+      <nz-form-label [nzSm]="4" nzFor="name" nzRequired>
+        <span>ФИО</span>
+      </nz-form-label>
+
+      <nz-form-control
+        [nzSm]="20"
+        [nzValidateStatus]="validateForm.controls['surname']"
+        nzErrorTip="Введите ваше фио!"
+      >
+        <nz-input-group nzCompact>
+          <input style="width: 33.33%" nz-input id="name" formControlName="name" placeholder="Имя"/>
+
+          <input style="width: 33.33%" nz-input id="surname" formControlName="surname"
+                 placeholder="Фамилия"/>
+
+          <input style="width: 33.33%" nz-input id="patronymic" formControlName="patronymic"
+                 placeholder="Отчество"/>
+
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item class="none-width">
+      <nz-form-label [nzSm]="4" nzFor="gender" nzRequired>Пол</nz-form-label>
+      <nz-form-control
+        [nzSm]="20"
+        [nzValidateStatus]="validateForm.controls['gender']"
+        nzErrorTip="Введите пол"
+      >
+        <nz-radio-group formControlName="gender">
+          <label nz-radio nzValue="male">Мужчина</label>
+          <label nz-radio nzValue="female">Женщина</label>
+        </nz-radio-group>
+      </nz-form-control>
+    </nz-form-item>
+
+
+    <label>Материальные ценности</label>
+
+    <nz-table nzNoResult="Нет данных по сотрудникам" nzSize="small"
+              [nzScroll]="{ x: '100%'}"
+              [nzShowPagination]="false"
+              [nzData]="materialValues">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Категория</th>
+        <th>Наименование</th>
+        <th>Сумма</th>
+        <th>Дата</th>
+        <th>События</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of materialValues; index as i">
+        <td>{{data.id}}</td>
+        <td>{{data.category}}</td>
+        <td>{{data.name}}</td>
+        <td>{{data.cost}}</td>
+        <td>{{data.date | date : 'dd-MM-yyyy HH:mm' }}</td>
+        <td>
+          <nz-row style="width: 60px">
+            <nz-col nzOffset="1">
+              <button (click)="delete(i)" nz-button nzType="danger">
+                <i nz-icon nzType="lock" nzTheme="outline"></i>
+              </button>
+            </nz-col>
+          </nz-row>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+
+  </form>
+  <nz-form-item>
+    <nz-form-control [nzSm]="24" nzErrorTip="Заполните все поля">
+
+      <nz-input-group nzCompact>
+
+        <input class="width-input-second" nz-input placeholder="Категория"
+               [(ngModel)]="material.category"/>
+
+        <input class="width-input-second" nz-input placeholder="Наименование"
+               [(ngModel)]="material.name"/>
+
+        <input class="width-input-second" type="number" onkeydown="return event.keyCode !== 69"
+               nz-input placeholder="Сумма" [(ngModel)]="material.cost"/>
+
+        <button class="none-padding width-input-button" nz-button nzType="danger"
+                (click)="clear($event)">
+          <i nz-icon nzType="redo"></i>
+        </button>
+
+        <button class="none-padding-simple width-input-button" nz-button nzType="primary"
+                (click)="add($event)">
+          <i nz-icon nzType="plus-circle"></i>
+        </button>
+
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+
+  <div *nzModalFooter>
+    <button nz-button nzType="default" (click)="destroyModal()">Отменить</button>
+    <button nz-button nzType="primary" (click)="submitForm(true)">{{isEdit ? 'Обновить' : 'Сохранить'}}</button>
+  </div>
+</div>
